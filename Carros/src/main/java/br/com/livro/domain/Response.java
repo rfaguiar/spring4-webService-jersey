@@ -16,6 +16,13 @@ public class Response {
 		r.setMsg(string);
 		return r;
 	}
+	
+	public static Response Error(String string) {
+		Response r = new Response();
+		r.setStatus("ERROR");
+		r.setMsg(string);
+		return r;
+	}
 
 	public String getMsg() {
 		return msg;
