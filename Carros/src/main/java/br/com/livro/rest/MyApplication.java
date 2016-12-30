@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 public class MyApplication extends Application {
 
@@ -27,8 +28,13 @@ public class MyApplication extends Application {
 		Map<String, Object> properties = new HashMap<String, Object>();
 		//configura o pacote para fazer scan das classes com anota��es REST
 		properties.put("jersey.config.server.provider.packages", "br.com.livro");
-		return properties;
-		
-		
+		return properties;		
+	}
+	
+	@Override
+	public Set<Class<?>> getClasses() {
+		Set<Class<?>> s = new HashSet<Class<?>>();
+		s.add(RolesAllowedDynamicFeature.class);
+		return s;
 	}
 }

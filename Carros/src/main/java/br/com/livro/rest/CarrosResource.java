@@ -6,6 +6,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -16,6 +18,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -31,6 +34,7 @@ import br.com.livro.domain.Response;
 import br.com.livro.domain.ResponseWithURL;
 import br.com.livro.domain.UploadService;
 
+@PermitAll
 @Path("/carros")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -74,6 +78,7 @@ public class CarrosResource {
 		return carros;
 	}
 
+	@RolesAllowed("admin")
 	@DELETE
 	@Path("{id}")
 	public Response delete(@PathParam("id") long id) {
@@ -81,12 +86,14 @@ public class CarrosResource {
 		return Response.ok("Carro deletado com sucesso");
 	}
 
+	@RolesAllowed("admin")
 	@POST
 	public Response post(Carro c) {
 		carroService.save(c);
 		return Response.ok("Carro salvo com sucesso");
 	}
 
+	@RolesAllowed("admin")
 	@PUT
 	public Response put(Carro c) {
 		carroService.save(c);
@@ -156,5 +163,21 @@ public class CarrosResource {
 			}
 		}
 		return ResponseWithURL.Error("Requisi��o inv�lida.");
+	}
+	
+	@GET
+	@Path("/toBase64/{texto}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String toBase64(@PathParam("texto") String texto){
+		String base64 = Base64.getEncoder().encodeToString(texto.getBytes());
+		return base64;
+	}
+	
+	@GET
+	@Path("/toBase64")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String toBase64ViaQueryParam(@QueryParam("texto") String texto){
+		String base64 = Base64.getEncoder().encodeToString(texto.getBytes());
+		return base64;
 	}
 }

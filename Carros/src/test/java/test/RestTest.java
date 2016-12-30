@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.Test;
 
 import br.com.livro.domain.Carro;
@@ -26,6 +27,7 @@ public class RestTest {
 		ClientConfig clientConfig = new ClientConfig();
 		Client client = ClientBuilder.newClient(clientConfig);		
 		client.register(GsonMessageBodyHandler.class);
+		client.register(HttpAuthenticationFeature.basic("livro", "livro123"));
 		
 		String URL = "http://localhost:8080/Carros/rest";		
 		WebTarget target = client.target(URL).path("carros/11");		
@@ -43,6 +45,7 @@ public class RestTest {
 		ClientConfig clientConfig = new ClientConfig();
 		Client client = ClientBuilder.newClient(clientConfig);		
 		client.register(GsonMessageBodyHandler.class);
+		client.register(HttpAuthenticationFeature.basic("admin", "admin123"));
 		
 		String URL = "http://localhost:8080/Carros/rest";	
 		WebTarget target = client.target(URL).path("carros/12");		
@@ -62,6 +65,7 @@ public class RestTest {
 		ClientConfig clientConfig = new ClientConfig();
 		Client client = ClientBuilder.newClient(clientConfig);		
 		client.register(GsonMessageBodyHandler.class);
+		client.register(HttpAuthenticationFeature.basic("admin", "admin123"));
 		
 		String base64 = Base64.getEncoder().encodeToString("Ricardo Lecheta".getBytes());
 		
@@ -87,6 +91,7 @@ public class RestTest {
 		ClientConfig clientConfig = new ClientConfig();
 		Client client = ClientBuilder.newClient(clientConfig);		
 		client.register(GsonMessageBodyHandler.class);
+		client.register(HttpAuthenticationFeature.basic("admin", "admin123"));
 		
 		Carro c = new Carro();
 		c.setNome("Novo Carro");
